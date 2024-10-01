@@ -1,7 +1,9 @@
+import { Transform, Type } from 'class-transformer';
 import { IsOptional, IsNumber, IsBoolean } from 'class-validator';
 
 export class FilterProductDto {
   @IsOptional()
+  @Transform(({ value }) => value === 'true') // Convierte a booleano
   @IsBoolean()
   status?: boolean;
 
@@ -14,5 +16,13 @@ export class FilterProductDto {
   maxPrice?: number;
 
   @IsOptional()
-  created_by?: number; 
+  @Type(() => Number)
+  @IsNumber()
+  categoryId?: number;
+
+  @IsOptional()
+  name?: string;
+
+  @IsOptional()
+  created_by?: number;
 }

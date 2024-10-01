@@ -1,5 +1,7 @@
 import { IsOptional, IsString, IsNumber, IsBoolean } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { CategoryEntity } from 'src/categories/entities/category.entity';
+import { Transform, Type } from 'class-transformer';
 
 export class UpdateProductDto {
   @ApiProperty({ description: 'Nombre del producto', required: false })
@@ -12,7 +14,10 @@ export class UpdateProductDto {
   @IsString()
   description?: string;
 
-  @ApiProperty({ description: 'URL de la imagen del producto', required: false })
+  @ApiProperty({
+    description: 'URL de la imagen del producto',
+    required: false,
+  })
   @IsOptional()
   @IsString()
   url_image?: string;
@@ -20,20 +25,41 @@ export class UpdateProductDto {
   @ApiProperty({ description: 'Precio del producto', required: false })
   @IsOptional()
   @IsNumber()
+  @Type(() => Number)
   price?: number;
 
-  @ApiProperty({ description: 'Cantidad disponible del producto', required: false })
+  @ApiProperty({
+    description: 'Cantidad disponible del producto',
+    required: false,
+  })
   @IsOptional()
   @IsNumber()
+  @Type(() => Number)
   quantity?: number;
 
   @ApiProperty({ description: 'Estado del producto', required: false })
   @IsOptional()
-  @IsBoolean()
-  status?: boolean;
+  @IsString() // Convierte a booleano
+  status?: string;
 
-  @ApiProperty({ description: 'ID del usuario que creó el producto', required: false })
+  @ApiProperty({
+    description: 'ID del usuario que creó el producto',
+    required: false,
+  })
   @IsOptional()
   @IsNumber()
+  @Type(() => Number)
   created_by?: number;
+
+  @ApiProperty({
+    description: 'ID de la categoria del producto',
+    required: false,
+  })
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  category_id?: number;
+
+  @IsOptional()
+  category?: CategoryEntity;
 }

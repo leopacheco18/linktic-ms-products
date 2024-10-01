@@ -1,5 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import { CategoryEntity } from 'src/categories/entities/category.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  JoinColumn,
+  OneToOne,
+} from 'typeorm';
 
 @Entity({ schema: 'linktic', name: 'products' })
 export class Product {
@@ -38,4 +46,11 @@ export class Product {
   @Column({ name: 'created_by', type: 'bigint' })
   @ApiProperty({ description: 'ID del usuario que creó el producto' })
   created_by: number;
+
+  @OneToOne(() => CategoryEntity, (category) => category.product, {
+    eager: true,
+  })
+  @ApiProperty({ description: 'Categoría del producto' })
+  @JoinColumn({ name: 'category_id' })
+  category: CategoryEntity;
 }
